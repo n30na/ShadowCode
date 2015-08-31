@@ -1,0 +1,106 @@
+When Statements
+
+On Actor Alive	The trigger will be evaluated when an Actor spawns
+On Actor Awareness of Another Actor	The trigger will be evaluated when one Actor gains awareness of another Actor
+On Actor Clicked	Fires when an Actor is clicked on
+On Actor Damage	The trigger will be evaluated when an actor takes damage
+On Actor Death	The trigger will be evaluated when one Actor kills another
+On Actor Downed	The trigger will be evaluated when one Actor incapacitates another
+On Actor End Turn	The trigger will be evaluated when an Actor ends their Turn.
+On Actor Movement Finished	The trigger will be evaluated when an Actor finishes a movement action
+On Actor Revived	The trigger will be evaluated when an Actor is revived
+On Actor Start Turn	The trigger will be evaluated when an Actor starts their Turn
+On Actor Teleport	The trigger will be evaluated when an Actor is teleported
+On AI New Target	The trigger will be evaluated when an AI NPC acquires a new target
+On AI Red Alert	The trigger will be evaluated when an AI NPC goes into high alert
+On AI Threat Evaluation	The trigger will be evaluated when an AI NPC evaluates an Actor as the specified threat type
+On Alarm Activated	The trigger will be evaluated when the Alarm is activated
+On Camera Fade In	The trigger will be evaluated when a camera fade in completes
+On Camera Fade Out	The trigger will be evaluated when a camera fade out completes
+On Camera Region Activated	The trigger will be evaluated when this Region becomes active
+On Character Creation Confirmed	The trigger will be evaluated when a successful player is created and the Confirm button is pressed
+On Combat Entered	The trigger will be evaluated when any team has visible enemy threats
+On Combat Exited	The trigger will be evaluated when all teams has no visible enemy threats
+On Conversation Complete	The trigger will be evaluated when a conversation dialog completes
+On Curtains Up	The trigger will be evaluated when the initial fade in completes
+On Dimension Heat Threshold	The trigger will be evaluated when the Heat Threshold for the given Scene Dimension is reached
+On Equip Confirmed	The trigger will be evaluated when the Confirm button is pressed
+On Freemove Mode Enter	The trigger will be evaluated when the game enters freemove mode
+On Goal Update	The trigger will be evaluated when the status of a Scene Goal changes
+On Host Jacked Out	Fires when an Actor Jacks out of the Matrix
+On Item Interaction	The trigger will be evaluated when an object is interacted with
+On Item Pickup	The trigger will be evaluated when an item is picked up
+On Item Used	The trigger will be evaluated when an item is used
+On Map Setup	Trigger will fire when the map is first initialized. Before selecting Continue *
+On Map Start	Trigger will fire when the map has loaded. After selecting Continue
+On New Round	Fire after all the actors have had a turn and a new Battle Round begins
+On Region Enter	The trigger will be evaluated when an Actor enters a Region
+On Region Exit	The trigger will be evaluated when an Actor leaves a Region
+On Roster Confirmed	The trigger will be evaluated when all hiring conditions are met and the Confirm button is pressed
+On Store Screen Closed	The trigger will be evaluated when a store screen is closed
+On Team Detain Enter	The trigger will be evaluated when a single teams has all actors detained
+On Team Detain Exit	The trigger will be evaluated when a single teams has no actors detained
+On Turn Mode Enter
+
+If Statements
+
+No Condition	This condition always succeeds.
+AND	This statement evaluates to true if both condition A and condition B are true
+OR	This statement evaluates to true if either condition A is true or condition B is true
+Invert Bool	Returns the inverted value of the specified bool
+Match (string)	Check if the first string matches the pattern with wildcards. Case insensitive
+Actor Has Run Speed	Checks if an actor has the specified run speed or not
+Actor Has Status Condition	Checks if an actor has the specified condition or not
+Actor Is A Controlled Spirit or Drone	Checks if an actor is a drone or spirit controlled by another actor
+Actor is Jacked in	Returns whether or not the given Actor is currently decking
+Actor is Jacked in to Matrix Dimension	Returns whether or not the given Actor is decking in a specific dimension
+Actor is Player Controlled	Returns whether or not the given Actor is controlled by the player
+Actor is a Persona	Returns whether or not the given Actors are a PC persona
+Compare Actor Attribute	Compares an Actor's Attribute to a number
+Compare Actor Gender	Checks whether an actor is of a particular gender
+Compare Actor Race	Checks whether an actor is of a particular metahuman race
+Compare Actor Skill	Compares an Actor's Skill to a number
+Compare Actor Specialization	Compares an Actor's Specialization to given Value
+Compare Actor Team	Checks whether an actor is on a particular team
+Compare Hire-able Actor Attribute	Guarantees the player hires at least one actor with a particular Attribute level
+Compare Hire-able Actor Skill	Guarantees the player hires at least one actor with a particular skill level
+Compare Hire-able Actor Tag	Guarantees the player hires at least one actor with or without a particular tag
+Compare Hire-able Has Cyberdeck	Checks whether anyone on a hire-able roster has a Cyberdeck
+Compare Team Attribute	Compare's a Team's Attribute to a number
+Compare Team Skill	Compare's a Team's Skill to a number
+Compare Team Specialization	Compares a Team's Specialization to a number
+Comparison (Actor)	Checks whether one Actor is the same as another
+Comparison (Attribute)	Checks whether one Attribute is the same as another
+Comparison (Prop)	Checks whether one Prop is the same as another
+Comparison (Skill)	Checks whether one Skill is the same as another
+Comparison (Specialization)	Checks whether one Specialization is the same as another
+Comparison (bool)	Compare two bools
+Comparison (float)	Compare two floats
+Comparison (int)	Compare two integers
+Comparison (string)	Compare two strings
+Evaluate Actor Consciousness	Checks whether the specified Actor is conscious or not
+Evaluate Actor Cover	Checks whether the specified Actor is in Cover or not
+Evaluate Actor Has Visible Threats	Checks if one set of Actors has visible threats from another set of Actors *
+Evaluate Actor Threat Type to Actor	Checks whether an Actor is of the specified threat type of another Actor
+Evaluate Alarm State	Checks whether the Alarm is activated or not
+Evaluate Cover Between Actors	Checks if one Actor has the specified amount of cover between them and another Actor
+Evaluate Goal	Checks the state of a specified Scene Goal
+Evaluate if Actor Has Item	Checks whether an Actor is carrying a particular item
+Evaluate if Actor Has Item Holstered	Checks whether an Actor is carrying a holstered item
+Evaluate if Actor Has Temp Body	Checks whether an Actor is using a temporary body
+Evaluate if Actor is Decker	Checks if an actor is a decker *
+Evaluate if Actor is Downed	Checks whether an Actor is downed and needs reviving
+Evaluate if Actor is Inside Region	Checks whether a list of Actors are inside a particular region or not
+Evaluate if Stash Has Item	Checks whether the particular item is stored in current stash
+Evaluate if Team has Cyberdeck	Checks whether anyone on a given team has a Cyberdeck
+Evaluate Nuyen	Checks whether Player has a specified amount of Nuyen
+Evaluate Prop is Closed Door	Checks whether the Prop is a door in an open or closed state
+Evaluate Tag Pattern for Actor	Checks whether an Actor has the specified tag pattern which uses ? or * wildcards
+Evalaute Tag Pattern for Prop	Checks whether a Prop has the specified tag pattern which uses ? or * wildcards
+Evaluate Tag for Actor	Checks whether an Actor has the specified Tag
+Evaluate Tag for Prop	Checks whether a Prop has the specified Tag
+Evaluate Team Survival Percentage	Checks the current percentage of a specified Team is dead
+Evaluate Turn Mode	DEPRECATED: Checks whether the game is currently in Turn-Based mode or Freemove mode
+Get Dependent Story Variable (bool)	Gets a variable from a dependent Story. Uses the default value if the variable can't be found
+Get Region Enabled	Returns the current Enabled state of the specified Region
+Prop Can Be Interacted With	Returns true if the chosen Prop can be interacted with or not

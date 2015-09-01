@@ -2,8 +2,6 @@
  * Created by neona on 8/24/2015.
  */
 import com.ShadowCode.ShadowrunDefs.*;
-import com.ShadowCode.ShadowrunDefs.SceneDef.*;
-import com.google.protobuf.CodedInputStream;
 import com.google.protobuf.TextFormat;
 
 import java.io.*;
@@ -271,6 +269,7 @@ public class ShadowCode2 {
 
         output.append("{\n");
 
+        if(innerCode.length() != 0) innerCode.insert(0,tabBlock);
 
         for(int i = 0;i < innerCode.length(); i++) {
             if(innerCode.charAt(i) == '\n' && i+1 != innerCode.length()) {

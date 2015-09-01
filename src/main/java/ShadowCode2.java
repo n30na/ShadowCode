@@ -14,6 +14,8 @@ import java.io.InputStreamReader;
 import java.lang.String;
 
 public class ShadowCode2 {
+    static int tabs = 4;  //number of spaces to use for indentation
+
     public static void main(String[] args) {
         //System.out.println(args[0]);
         SceneDef scene = null;
@@ -38,7 +40,7 @@ public class ShadowCode2 {
 
     }
 
-    public static String convertToFunction(String inputName) {
+    static String convertToFunction(String inputName) {
         String outputName = new String();
 
         // use lazy/fast method with character operations for roughing
@@ -64,11 +66,11 @@ public class ShadowCode2 {
         return outputName;
     }
 
-    public static String convertFromFunction(String inputName) {
+    static String convertFromFunction(String inputName) {
         return inputName;
     }
 
-    public static StringBuilder codeFromTriggers(SceneDef scene) {
+    static StringBuilder codeFromTriggers(SceneDef scene) {
         StringBuilder output = new StringBuilder();
 
         if(scene.getTriggersCount() > 0) {
@@ -80,7 +82,7 @@ public class ShadowCode2 {
         return output;
     }
 
-    public static StringBuilder codeFromTrigger(TsTriggerDef trigger) {
+    static StringBuilder codeFromTrigger(TsTriggerDef trigger) {
         StringBuilder innerCode = new StringBuilder();
         StringBuilder output;
 
@@ -94,49 +96,49 @@ public class ShadowCode2 {
         return output;
     }
 
-    public static StringBuilder codeFromTriggerEvent(TsBlock event) {
+    static StringBuilder codeFromTriggerEvent(TsBlock event) {
         StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public static StringBuilder codeFromTriggerConditions(TsBlock conditions) {
+    static StringBuilder codeFromTriggerConditions(TsBlock conditions) {
         StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public static StringBuilder codeFromTriggerActions(TsBlock actions) {
+    static StringBuilder codeFromTriggerActions(TsBlock actions) {
         StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public static StringBuilder codeFromTriggerElseActions(TsBlock elseActions) {
+    static StringBuilder codeFromTriggerElseActions(TsBlock elseActions) {
         StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public static StringBuilder codeFromBlock(TsBlock block) {
+    static StringBuilder codeFromBlock(TsBlock block) {
         StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public static StringBuilder codeFromOps(TsCall ops) {   //ops is the container for functions - do not break down further
+    static StringBuilder codeFromOps(TsCall ops) {   //ops is the container for functions - do not break down further
         StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public static StringBuilder codeBuildDynamicDataSection(SceneDef scene) {
+    static StringBuilder codeBuildDynamicDataSection(SceneDef scene) {
         StringBuilder output = new StringBuilder();
         StringBuilder innerCode = new StringBuilder();
 
@@ -162,34 +164,74 @@ public class ShadowCode2 {
         return output;
     }
 
-    public static StringBuilder codeFromEvents(SceneDef scene) {
+    static StringBuilder codeFromEvents(SceneDef scene) {
         StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public static StringBuilder codeFromTags(SceneDef scene) {
+    static StringBuilder codeFromTags(SceneDef scene) {
         StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public static StringBuilder codeFromGoals(SceneDef scene) {
+    static StringBuilder codeFromGoals(SceneDef scene) {
         StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public static StringBuilder codeFromVariables(SceneDef scene) {
+    static StringBuilder codeFromVariables(SceneDef scene) {
+        StringBuilder innerCode = new StringBuilder();
         StringBuilder output = new StringBuilder();
 
         if(scene.getVariablesCount() > 0) {
             for (TsVariant variable : scene.getVariablesList()) {
+                switch (variable.getVariablerefValue().getTypeName()) {
+                    case "int":
+                        innerCode.append("Int ");
+                        break;
+                    case "bool":
+                        innerCode.append("Bool ");
+                        break;
+                    case "float":
+                        innerCode.append("Float ");
+                        break;
+                    case "string":
+                        innerCode.append("String ");
+                        break;
+                    default:
+                        innerCode.append("Unknown ");
+                        break;
+                }
+                innerCode.append(variable.getVariablerefValue().getName() + " = ");
 
+                switch (variable.getVariablerefValue().getTypeName()) {
+                    case "int":
+                        innerCode.append(variable.getIntValue());
+                        break;
+                    case "bool":
+                        innerCode.append(variable.getBoolValue());
+                        break;
+                    case "float":
+                        innerCode.append(variable.getFloatValue());
+                        break;
+                    case "string":
+                        innerCode.append('"' + variable.getStringValue() + '"');
+                        break;
+                    default:
+                        innerCode.append("null");
+                        break;
+                }
+                innerCode.append(";\n");
             }
+
+            output = codeBlock(innerCode, "Variables");
+
         }
 
         return output;
@@ -211,7 +253,19 @@ public class ShadowCode2 {
 
     static StringBuilder codeBlock(StringBuilder innerCode) {
         StringBuilder output = new StringBuilder();
+        String tabBlock = new String(new char[tabs]).replace('\0', ' ');
 
+        output.append("{\n");
+
+
+        for(int i = 0;i < innerCode.length(); i++) {
+            if(innerCode.charAt(i) == '\n' && i+1 != innerCode.length()) {
+                innerCode.insert(i+1,tabBlock);
+            }
+        }
+        output.append(innerCode);
+
+        output.append("}\n");
 
         return output;
     }

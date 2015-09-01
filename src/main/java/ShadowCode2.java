@@ -2,42 +2,45 @@
  * Created by neona on 8/24/2015.
  */
 import com.ShadowCode.ShadowrunDefs.*;
+import com.ShadowCode.ShadowrunDefs.SceneDef.*;
 import com.google.protobuf.CodedInputStream;
+import com.google.protobuf.TextFormat;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.String;
 
 public class ShadowCode2 {
     static int tabs = 4;  //number of spaces to use for indentation
 
     public static void main(String[] args) {
-        //System.out.println(args[0]);
-        SceneDef scene = null;
+        SceneDef inputScene = null;
         StringBuilder outputDocument = new StringBuilder();
+        FileOutputStream outputFile = null;
 
         try {
-            scene = SceneDef.parseFrom(
-                    CodedInputStream.newInstance(
-                            new FileInputStream(new File(args[0]))
-                    )
-            );
-
+            InputStream inputFile = new FileInputStream(new File(args[0]));
+            InputStreamReader inputReader = new InputStreamReader(inputFile);
+            SceneDef.Builder sceneBuilder = SceneDef.newBuilder();
+            TextFormat.merge(inputReader, sceneBuilder);
+            inputScene = sceneBuilder.build();
+            outputFile = new FileOutputStream(args[1], false);
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
 
-        outputDocument.append(codeBuildStaticDataSection(scene));
-        outputDocument.append(codeBuildDynamicDataSection(scene));
+        outputDocument.append(codeBuildStaticDataSection(inputScene));
+        outputDocument.append(codeBuildDynamicDataSection(inputScene));
 
-        outputDocument.append(codeFromTriggers(scene));
+        outputDocument.append(codeFromTriggers(inputScene));
 
-
+        try {
+            outputFile.write(outputDocument.toString().getBytes());
+            outputFile.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
     }
 
     static String convertToFunction(String inputName) {
@@ -139,8 +142,8 @@ public class ShadowCode2 {
     }
 
     static StringBuilder codeBuildDynamicDataSection(SceneDef scene) {
-        StringBuilder output = new StringBuilder();
-        StringBuilder innerCode = new StringBuilder();
+        StringBuilder output = new StringBuilder("");
+        StringBuilder innerCode = new StringBuilder("");
 
         innerCode.append(codeFromTags(scene));
         innerCode.append(codeFromEvents(scene));
@@ -152,8 +155,8 @@ public class ShadowCode2 {
     }
 
     static StringBuilder codeBuildStaticDataSection(SceneDef scene) {
-        StringBuilder output = new StringBuilder();
-        StringBuilder innerCode = new StringBuilder();
+        StringBuilder output = new StringBuilder("");
+        StringBuilder innerCode = new StringBuilder("");
 
         innerCode.append(codeFromCharacters(scene));
         innerCode.append(codeFromGoals(scene));
@@ -165,16 +168,30 @@ public class ShadowCode2 {
     }
 
     static StringBuilder codeFromEvents(SceneDef scene) {
-        StringBuilder output = new StringBuilder();
+        StringBuilder output = new StringBuilder("");
+        StringBuilder innerCode = new StringBuilder("");
 
+        if(scene.getMapEventsCount() > 0) {
+            for(String event:scene.getMapEventsList()) {
+                innerCode.append("Event " + '"' + event + '"' + ";\n");
+            }
 
+            output = codeBlock(innerCode, "Events");
+        }
         return output;
     }
 
     static StringBuilder codeFromTags(SceneDef scene) {
-        StringBuilder output = new StringBuilder();
+        StringBuilder output = new StringBuilder("");
+        StringBuilder innerCode = new StringBuilder("");
 
+        if(scene.getSenseTagsCount() > 0) {
+            for(String event:scene.getSenseTagsList()) {
+                innerCode.append("Tag " + '"' + event + '"' + ";\n");
+            }
 
+            output = codeBlock(innerCode, "Tags");
+        }
         return output;
     }
 
@@ -186,8 +203,8 @@ public class ShadowCode2 {
     }
 
     static StringBuilder codeFromVariables(SceneDef scene) {
-        StringBuilder innerCode = new StringBuilder();
-        StringBuilder output = new StringBuilder();
+        StringBuilder innerCode = new StringBuilder("");
+        StringBuilder output = new StringBuilder("");
 
         if(scene.getVariablesCount() > 0) {
             for (TsVariant variable : scene.getVariablesList()) {
@@ -229,30 +246,27 @@ public class ShadowCode2 {
                 }
                 innerCode.append(";\n");
             }
-
             output = codeBlock(innerCode, "Variables");
-
         }
+        return output;
+    }
+
+    static StringBuilder codeFromRegions(SceneDef scene) {
+        StringBuilder output = new StringBuilder("");
+
 
         return output;
     }
 
-    public static StringBuilder codeFromRegions(SceneDef scene) {
-        StringBuilder output = new StringBuilder();
-
-
-        return output;
-    }
-
-    public static StringBuilder codeFromCharacters(SceneDef scene) {
-        StringBuilder output = new StringBuilder();
+    static StringBuilder codeFromCharacters(SceneDef scene) {
+        StringBuilder output = new StringBuilder("");
 
 
         return output;
     }
 
     static StringBuilder codeBlock(StringBuilder innerCode) {
-        StringBuilder output = new StringBuilder();
+        StringBuilder output = new StringBuilder("");
         String tabBlock = new String(new char[tabs]).replace('\0', ' ');
 
         output.append("{\n");
@@ -271,7 +285,7 @@ public class ShadowCode2 {
     }
 
     static StringBuilder codeBlock(StringBuilder innerCode, String blockTitle) {
-        StringBuilder output = new StringBuilder();
+        StringBuilder output = new StringBuilder("");
 
         output.append(blockTitle + ' ');
         output.append(codeBlock(innerCode));
@@ -280,7 +294,7 @@ public class ShadowCode2 {
     }
 
     static StringBuilder codeBlock(StringBuilder innerCode, String blockTitle, String blockIdentifier) {
-        StringBuilder output = new StringBuilder();
+        StringBuilder output = new StringBuilder("");
 
         output.append(blockTitle + ' ' + '"' + blockIdentifier + '"' + ' ');
         output.append(codeBlock(innerCode));

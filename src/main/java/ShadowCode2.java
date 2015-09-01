@@ -17,6 +17,8 @@ public class ShadowCode2 {
     public static void main(String[] args) {
         //System.out.println(args[0]);
         SceneDef scene = null;
+        StringBuilder outputDocument = new StringBuilder();
+
         try {
             scene = SceneDef.parseFrom(
                     CodedInputStream.newInstance(
@@ -27,13 +29,16 @@ public class ShadowCode2 {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    for (TsTriggerDef trigger:scene.getTriggersList()) {
 
-        }
+        outputDocument.append(codeBuildStaticDataSection(scene));
+        outputDocument.append(codeBuildDynamicDataSection(scene));
+
+        outputDocument.append(codeFromTriggers(scene));
+
 
     }
 
-    public String convertToFunction(String inputName) {
+    public static String convertToFunction(String inputName) {
         String outputName = new String();
 
         // use lazy/fast method with character operations for roughing
@@ -59,93 +64,173 @@ public class ShadowCode2 {
         return outputName;
     }
 
-    public String convertFromFunction(String inputName) {
+    public static String convertFromFunction(String inputName) {
         return inputName;
     }
 
-    public String codeFromTrigger(TsTriggerDef trigger) {
-        String output = new String();
+    public static StringBuilder codeFromTriggers(SceneDef scene) {
+        StringBuilder output = new StringBuilder();
+
+        if(scene.getTriggersCount() > 0) {
+            for (TsTriggerDef trigger : scene.getTriggersList()) {
+                output.append(codeFromTrigger(trigger));
+            }
+        }
+
+        return output;
+    }
+
+    public static StringBuilder codeFromTrigger(TsTriggerDef trigger) {
+        StringBuilder innerCode = new StringBuilder();
+        StringBuilder output;
+
+        if(trigger.hasEvents()) innerCode.append(codeFromTriggerEvent(trigger.getEvents()));
+        if(trigger.hasConditions()) innerCode.append(codeFromTriggerConditions(trigger.getConditions()));
+        if(trigger.hasActions()) innerCode.append(codeFromTriggerActions(trigger.getActions()));
+        if(trigger.hasElseActions()) innerCode.append(codeFromTriggerElseActions(trigger.getElseActions()));
+
+        output = codeBlock(innerCode, "Trigger", trigger.getName());
+
+        return output;
+    }
+
+    public static StringBuilder codeFromTriggerEvent(TsBlock event) {
+        StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public String codeFromTriggerEvent(TsBlock event) {
-        String output = new String();
+    public static StringBuilder codeFromTriggerConditions(TsBlock conditions) {
+        StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public String codeFromTriggerConditions(TsBlock conditions) {
-        String output = new String();
+    public static StringBuilder codeFromTriggerActions(TsBlock actions) {
+        StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public String codeFromTriggerActions(TsBlock actions) {
-        String output = new String();
+    public static StringBuilder codeFromTriggerElseActions(TsBlock elseActions) {
+        StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public String codeFromTriggerElseActions(TsBlock elseActions) {
-        String output = new String();
+    public static StringBuilder codeFromBlock(TsBlock block) {
+        StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public String codeFromBlock(TsBlock block) {
-        String output = new String();
+    public static StringBuilder codeFromOps(TsCall ops) {   //ops is the container for functions - do not break down further
+        StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public String codeFromOps(TsCall ops) {
-        String output = new String();
+    public static StringBuilder codeBuildDynamicDataSection(SceneDef scene) {
+        StringBuilder output = new StringBuilder();
+        StringBuilder innerCode = new StringBuilder();
+
+        innerCode.append(codeFromTags(scene));
+        innerCode.append(codeFromEvents(scene));
+        innerCode.append(codeFromVariables(scene));
+
+        output.append(codeBlock(innerCode, "DynamicData"));
+
+        return output;
+    }
+
+    static StringBuilder codeBuildStaticDataSection(SceneDef scene) {
+        StringBuilder output = new StringBuilder();
+        StringBuilder innerCode = new StringBuilder();
+
+        innerCode.append(codeFromCharacters(scene));
+        innerCode.append(codeFromGoals(scene));
+        innerCode.append(codeFromRegions(scene));
+
+        output.append(codeBlock(innerCode, "StaticData"));
+
+        return output;
+    }
+
+    public static StringBuilder codeFromEvents(SceneDef scene) {
+        StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public String codeBuildDataSection(SceneDef scene) {
-        String output = new String();
+    public static StringBuilder codeFromTags(SceneDef scene) {
+        StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public String codeFromEvents(SceneDef scene) {
-        String output = new String();
+    public static StringBuilder codeFromGoals(SceneDef scene) {
+        StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public String codeFromTags(SceneDef scene) {
-        String output = new String();
+    public static StringBuilder codeFromVariables(SceneDef scene) {
+        StringBuilder output = new StringBuilder();
+
+        if(scene.getVariablesCount() > 0) {
+            for (TsVariant variable : scene.getVariablesList()) {
+
+            }
+        }
+
+        return output;
+    }
+
+    public static StringBuilder codeFromRegions(SceneDef scene) {
+        StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public String codeFromGoals(SceneDef scene) {
-        String output = new String();
+    public static StringBuilder codeFromCharacters(SceneDef scene) {
+        StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
-    public String codeFromVariables(SceneDef scene) {
-        String output = new String();
+    static StringBuilder codeBlock(StringBuilder innerCode) {
+        StringBuilder output = new StringBuilder();
 
 
         return output;
     }
 
+    static StringBuilder codeBlock(StringBuilder innerCode, String blockTitle) {
+        StringBuilder output = new StringBuilder();
 
+        output.append(blockTitle + ' ');
+        output.append(codeBlock(innerCode));
+
+        return output;
+    }
+
+    static StringBuilder codeBlock(StringBuilder innerCode, String blockTitle, String blockIdentifier) {
+        StringBuilder output = new StringBuilder();
+
+        output.append(blockTitle + ' ' + '"' + blockIdentifier + '"' + ' ');
+        output.append(codeBlock(innerCode));
+
+        return output;
+    }
 }
